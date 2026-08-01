@@ -29,9 +29,10 @@ export interface GroupedActivities {
     }
 }
 
-export const getActivities = async (jiraSettings: JiraSettings, maxResults: number, verbose: boolean, fromDate?: number): Promise<GroupedActivities> => {
+export const getActivities = async (jiraSettings: JiraSettings, maxResults: number, verbose: boolean, fromDate?: number, toDate?: number): Promise<GroupedActivities> => {
     const fromDateFilter = fromDate ? `&streams=update-date+AFTER+${fromDate}` : ''
-    const url = `activity?maxResults=${maxResults}&streams=user+IS+${encodeURIComponent(jiraSettings.username)}${fromDateFilter}&os_authType=basic`
+    const toDateFilter = toDate ? `&streams=update-date+BEFORE+${toDate}` : ''
+    const url = `activity?maxResults=${maxResults}&streams=user+IS+${encodeURIComponent(jiraSettings.username)}${fromDateFilter}${toDateFilter}&os_authType=basic`
     const response = await requestWithCredentials(jiraSettings, url, verbose).buffer(true)
 
     if (verbose) {

@@ -1,5 +1,5 @@
 {
-    "name": "jira-activity",
+    "name": "@chromey/jira-activity",
     "version": "1.7.0",
     "description": "This tool parses your jira activity stream and returns a list of your workitems grouped by day.",
     "main": "index.ts",
@@ -16,9 +16,12 @@
         "dist"
     ],
     "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
     "repository": {
         "type": "git",
-        "url": "https://github.com/ruettenm/jira-activity"
+        "url": "https://github.com/chromey/jira-activity"
     },
     "engines": {
         "npm": ">4.0",

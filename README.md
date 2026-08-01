@@ -6,7 +6,7 @@ The official atlassian documentation for the jira activity stream can be found [
 ### Initial setup
 ```bash
 # installation
-npm i -g jira-activity
+npm i -g @chromey/jira-activity
 
 # setup your defaults
 jira-activity hostname some.hostname
@@ -24,6 +24,11 @@ jira-activity list -u your@username.com -h some.hostname
 # if you only want to see your activities for the current week or month
 jira-activity list -f week
 jira-activity list -f month
+
+# if you want to see your activities for an explicit date range
+jira-activity list --from 2020-01-01 --to 2020-01-31
+jira-activity list --from 2020-01-01
+jira-activity list --to 2020-01-31
 ```
 ![Example Image](https://raw.githubusercontent.com/ruettenm/jira-activity/master/img/example.png)
 

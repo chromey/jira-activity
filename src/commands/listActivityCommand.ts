@@ -17,12 +17,34 @@ export const listActivityCommand = async (command: any) => {
         const maxResults = command.max || 500
         const filter = command.filter
         const verbose = command.verbose
+        const from = command.from
+        const to = command.to
 
         if (filter) {
             if (!['week', 'month'].includes(filter)) {
                 console.error('Please use the term "week" or "month" to filter the output')
                 process.exit(1)
             }
+
+            if (from || to) {
+                console.error('Please use either --filter or --from/--to, not both.')
+                process.exit(1)
+            }
+        }
+
+        if (from && !moment(from, 'YYYY-MM-DD', true).isValid()) {
+            console.error('Please provide a valid --from date in the format YYYY-MM-DD')
+            process.exit(1)
+        }
+
+        if (to && !moment(to, 'YYYY-MM-DD', true).isValid()) {
+            console.error('Please provide a valid --to date in the format YYYY-MM-DD')
+            process.exit(1)
+        }
+
+        if (from && to && moment(from, 'YYYY-MM-DD').isAfter(moment(to, 'YYYY-MM-DD'))) {
+            console.error('The --from date must not be after the --to date')
+            process.exit(1)
         }
 
         if (verbose) {
@@ -52,7 +74,8 @@ export const listActivityCommand = async (command: any) => {
                     jiraSettings,
                     maxResults,
                     verbose,
-                    filter ? moment().startOf(filter).unix() * 1000 : undefined
+                    filter ? moment().startOf(filter).unix() * 1000 : (from ? moment(from, 'YYYY-MM-DD').startOf('day').unix() * 1000 : undefined),
+                    to ? moment(to, 'YYYY-MM-DD').endOf('day').unix() * 1000 : undefined
                 )
                 print(activities)
             } catch (error) {
